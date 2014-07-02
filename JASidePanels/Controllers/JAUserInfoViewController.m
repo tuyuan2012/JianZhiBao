@@ -12,8 +12,6 @@
 
 #import "UIImageView+WebCache.h"
 #import "SDImageCache.h"
-
-
 @interface JAUserInfoViewController ()
 
 @property (nonatomic) NSArray *sectionTextArray;

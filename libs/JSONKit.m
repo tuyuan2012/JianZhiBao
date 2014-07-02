@@ -6,9 +6,6 @@
 //
 
 /*
-    tony
- */
-/*
  Copyright (c) 2011, John Engelhart
  
  All rights reserved.
