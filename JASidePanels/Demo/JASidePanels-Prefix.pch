@@ -1,0 +1,35 @@
+//
+// Prefix header for all source files of the 'JASidePanels' target in the 'JASidePanels' project
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_4_0
+#warning "This project uses features only available in iOS SDK 4.0 and later."
+#endif
+
+#ifdef __OBJC__
+	#import <UIKit/UIKit.h>
+	#import <Foundation/Foundation.h>
+    #import "AFNetworking.h"
+    #import "UIImageView+WebCache.h"
+    #import "UIViewController+ExtendViewController.h"
+
+    #define kScreen_Height   [[UIScreen mainScreen] bounds].size.height
+    #define kScreen_Width    [[UIScreen mainScreen] bounds].size.width
+
+    #define APP_KEY @"xKYQBcSLpcrbSjR7Y7E9SMby"   //你自己的应用api key
+    //[MobClick startWithAppkey:@"536b96ad56240b0a65023564"];
+    #define YouMengAPP_Key @"536b96ad56240b0a65023564" //友盟上应用的key
+    #define kIsUserInfoFull  @"kIsUserInfoFull"  //用户个人信息是否完善
+    #define kITUNES_LINK  @"http://itunes.apple.com/app/id844687136"
+
+    //主题颜色
+    #define kMAIN_THEME_COLOR [UIColor colorWithRed:0/255.0 green:149/255.0 blue:222/255.0 alpha:1.0]
+    //安全释放
+    #define RELEASE_SAFELY(_POINTER) if (nil != (_POINTER)){[_POINTER release];_POINTER = nil; }
+
+#endif
+
+
+//#define NSLog(...) {}
