@@ -5,36 +5,36 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>11FE21F3-4591-4916-A3E1-C8918B73E3B4</string>
+	<string>AB276E91-8877-4952-B675-F8863CFECC1E</string>
 	<key>IDESourceControlProjectName</key>
 	<string>JASidePanels</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>67A5D030-0A48-49CB-8A7A-07E55AE502E3</key>
-		<string>https://github.com/gotosleep/JASidePanels.git</string>
+		<key>F7549402-3182-4555-AD74-C405E1F05C54</key>
+		<string>https://github.com/tuyuan2012/JianZhiBao</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>JASidePanels.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>67A5D030-0A48-49CB-8A7A-07E55AE502E3</key>
+		<key>F7549402-3182-4555-AD74-C405E1F05C54</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/gotosleep/JASidePanels.git</string>
+	<string>https://github.com/tuyuan2012/JianZhiBao</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>67A5D030-0A48-49CB-8A7A-07E55AE502E3</string>
+	<string>F7549402-3182-4555-AD74-C405E1F05C54</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>67A5D030-0A48-49CB-8A7A-07E55AE502E3</string>
+			<string>F7549402-3182-4555-AD74-C405E1F05C54</string>
 			<key>IDESourceControlWCCName</key>
-			<string>JASidePanels</string>
+			<string>JianZhiBao</string>
 		</dict>
 	</array>
 </dict>
