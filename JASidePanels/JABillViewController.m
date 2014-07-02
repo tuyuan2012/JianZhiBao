@@ -8,7 +8,6 @@
 
 #import "JABillViewController.h"
 #import <Frontia/Frontia.h>
-
 @interface JABillViewController ()
 
 @end
