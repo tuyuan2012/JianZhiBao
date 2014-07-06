@@ -9,7 +9,7 @@
 #import "JAWorkDetailViewController.h"
 #import "JAInputUserInfoTableViewController.h"
 #import <Frontia/Frontia.h>
-
+#import "JABasicInfoTableViewController.h"
 @interface JAWorkDetailViewController ()
 @property (nonatomic) NSInteger type;
 @property (strong, nonatomic) NSNumber *nowloading;
@@ -297,9 +297,9 @@
         [self.navigationController pushViewController:nextpage animated:YES];
         return;
     }
-    if (![self.nowloading boolValue]) {
-        
-    }
+    
+    //判断用户信息是否完整
+    [self checkUserInfoFull];
 }
 
 -(void)submitApplyInfo
@@ -505,5 +505,54 @@
     }];
 }
 
+
+#pragma mark - 判断用户信息是否完整
+-(void)checkUserInfoFull
+{
+    NSMutableURLRequest *request;
+    //更新个人信息
+    request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"GET" URLString:[NSString stringWithFormat:@"%@%@",Main_Domain,@"/api/user/info-complete"] parameters:@{@"user_id":[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"]} error:nil];
+    AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    op.responseSerializer = [AFJSONResponseSerializer serializer];
+    op.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        [HUD removeFromSuperview];
+        if ([[responseObject objectForKey:@"result"] isEqualToString:@"yes"]) {
+            if (![self.nowloading boolValue]) {
+                [self submitApplyInfo];
+            }
+        }
+        else {
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提醒" message:@"你的个人信息不完整！请进行编辑" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: @"稍等",nil];
+            alert.tag = 1212;
+            [alert show];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+    [[NSOperationQueue mainQueue] addOperation:op];
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(alertView.tag == 1212)
+    {
+        switch (buttonIndex) {
+            case 1:
+                [self.navigationController popViewControllerAnimated:YES];
+                break;
+            case 0:
+            {
+                JABasicInfoTableViewController *vc = [[JABasicInfoTableViewController alloc] init];
+                vc.title = @"个人信息";
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+                break;
+            default:
+                break;
+        }
+    }
+}
 @end
 

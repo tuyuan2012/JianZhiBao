@@ -235,9 +235,7 @@ static int maxFileSize = 250*1024;
         
         [footerView addSubview:submit];
         
-        
         return footerView;
-
     }
     
     return nil;
@@ -394,7 +392,8 @@ static int maxFileSize = 250*1024;
         
         //检查数据的有效性
         if([self checkInfoWith:_userInfoArray]){
-            [self updateUserAllInfoWith:info];
+            [self updateUserAllInfoWith:_userInfoArray];
+            //[self updateUserInfo:_userInfoArray];
         }
     }else
     {
@@ -408,9 +407,6 @@ static int maxFileSize = 250*1024;
 
 -(BOOL)checkInfoWith:(NSArray *)infoArray
 {
-    /*
-        @"姓名", @"性别", @"年龄",@"邮箱", @"手机号", @"电话号码", @"qq号"]
-     */
     NSArray *temparray = @[@"姓名", @"性别", @"年龄",@"邮箱", @"手机号", @"电话号码", @"qq号"];
     for(int i = 0;i < [infoArray count];i++)
     {
@@ -418,12 +414,33 @@ static int maxFileSize = 250*1024;
         {
             [self showAlertWithInfo:[NSString stringWithFormat:@"请输入%@",[temparray objectAtIndex:i]]];
             return false;
+        }else
+        {
+            if([[temparray objectAtIndex:i] isEqualToString:@"手机号"])
+            {
+                if(![self isMobileNumber:[infoArray objectAtIndex:i]])
+                {
+                    [self showAlertWithInfo:@"请输入有效的手机号!"];
+                    return false;
+                }
+            }
+            else if([[temparray objectAtIndex:i] isEqualToString:@"邮箱"])
+            {
+                if(![self isValidateEmail:[infoArray objectAtIndex:i]])
+                {
+                    [self showAlertWithInfo:@"请输入有效的邮箱!"];
+                    return false;
+                }
+            }
         }
     }
     return true;
 }
 
--(void)updateUserAllInfoWith:(NSString *)info
+/**
+ @[@"姓名", @"性别", @"年龄",@"邮箱", @"手机号", @"电话号码", @"qq号"];
+ */
+-(void)updateUserAllInfoWith:(NSArray *)info
 {
     if(_index == 0)
     {
@@ -431,33 +448,52 @@ static int maxFileSize = 250*1024;
         NSMutableURLRequest *request;
         
         //更新个人信息
-        request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"GET" URLString:[[NSUserDefaults standardUserDefaults] objectForKey:@"rootURL"]parameters:@{@"action":@"UpdateUserInfo",@"userid":[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"], @"operation":@"set", @"info":info} error:nil];
+        request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"GET" URLString:[NSString stringWithFormat:@"%@%@",Main_Domain,@"/api/user/update"] parameters:@{@"user_id":[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"], @"name":[info objectAtIndex:0],@"gender":[info objectAtIndex:1],@"age":[info objectAtIndex:2],@"email":[info objectAtIndex:3],@"phone":[info objectAtIndex:4],@"telephone":[info objectAtIndex:5], @"qq":[info objectAtIndex:6]} error:nil];
         
-        NSLog(@"REQUEST:%@",request);
         AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
         op.responseSerializer = [AFJSONResponseSerializer serializer];
-        op.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+        op.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
         [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"JSON: %@", responseObject);
             [HUD removeFromSuperview];
             if ([[responseObject objectForKey:@"result"] isEqualToString:@"ok"]) {
                 NSLog(@"%@",[responseObject objectForKey:@"用户ID"]);
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"修改成功！" message:@"" delegate:nil cancelButtonTitle:@"好" otherButtonTitles: nil];
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提醒" message:@"修改成功，是否调整支付宝信息编辑页面？" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: @"稍等",nil];
+                alert.tag = 1212;
                 [alert show];
-                [self.navigationController popViewControllerAnimated:YES];
             }
             else {
                 UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"服务器出错" message:[responseObject objectForKey:@"result"] delegate:nil cancelButtonTitle:@"好" otherButtonTitles: nil];
                 [alert show];
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [HUD removeFromSuperview];
             NSLog(@"Error: %@", error);
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提醒" message:@"服务器异常！" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+            [alert show];
         }];
         [[NSOperationQueue mainQueue] addOperation:op];
     }
 }
 
-- (void)updateInfoForKey:(NSString *)key value:(NSString *)value {
+-(void)updateUserInfo:(NSArray *)info
+{
+    NSDictionary *dict = @{@"user_id":@"152", @"name":[info objectAtIndex:0],@"gender":[info objectAtIndex:1],@"age":[info objectAtIndex:2],@"email":[info objectAtIndex:3],@"phone":[info objectAtIndex:4],@"telephone":[info objectAtIndex:5], @"qq":[info objectAtIndex:6]};
+    NSString *url = [NSString stringWithFormat:@"%@%@",Main_Domain,@"/api/user/update"];//你的接口地址
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];//申明返回的结果是json类型
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];//如果报接受类型不一致请替换一致text/html或别的
+    manager.requestSerializer=[AFJSONRequestSerializer serializer];//申明请求的数据是json类型
+    [manager POST:url parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@", responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+        NSLog(@"Error: %@", error);
+    }
+     ];
+}
+
+
+- (void)updateInfoForKey:(NSString *)key value:(NSString *)value{
     key = [key isEqualToString:@"年龄"] ? @"出生日期" : key;
     
     NSMutableURLRequest *request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"GET" URLString:[[NSUserDefaults standardUserDefaults] objectForKey:@"rootURL"] parameters:@{@"action":@"UpdateUserInfo", @"userid":[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"], @"key":key, @"value":value} error:nil];
@@ -484,6 +520,7 @@ static int maxFileSize = 250*1024;
     [[NSOperationQueue mainQueue] addOperation:op];
 }
 
+#pragma mark - 获取用户信息
 - (void)loadUserInfo {
     NSMutableURLRequest *request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"GET" URLString:[[NSUserDefaults standardUserDefaults] objectForKey:@"rootURL"] parameters:@{@"action":@"GetUserInfo",@"userid":[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"]} error:nil];
     NSLog(@"REQUEST:%@",request);
@@ -503,7 +540,7 @@ static int maxFileSize = 250*1024;
 		 * */
         self.mainInfoDic = [responseObject mutableCopy];
         
-        _userInfoArray = [[NSMutableArray alloc] initWithObjects:_mainInfoDic[@"姓名"], _mainInfoDic[@"性别"],_mainInfoDic[@"出生日期"],_mainInfoDic[@"邮箱"],_mainInfoDic[@"手机号"],_mainInfoDic[@"电话号码"],_mainInfoDic[@"qq号"], nil];
+        _userInfoArray = [[NSMutableArray alloc] initWithObjects:_mainInfoDic[@"姓名"], ![_mainInfoDic[@"性别"] isEqualToString:@""]?_mainInfoDic[@"性别"]:@"女",_mainInfoDic[@"出生日期"],_mainInfoDic[@"邮箱"],_mainInfoDic[@"手机号"],_mainInfoDic[@"电话号码"],_mainInfoDic[@"qq号"], nil];
         
         if ([_mainInfoDic[@"性别"] isEqualToString:@"男"]) {
             _genderSwitch.selectedSegmentIndex = 0;
@@ -522,6 +559,7 @@ static int maxFileSize = 250*1024;
     [[NSOperationQueue mainQueue] addOperation:op];
 }
 
+#pragma mark - 获取银行卡的信息
 - (void)loadCreditCardInfo {
     NSMutableURLRequest *request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"GET" URLString:[[NSUserDefaults standardUserDefaults] objectForKey:@"rootURL"] parameters:@{@"action":@"CreditCard", @"userid":[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"], @"operation":@"get"} error:nil];
     NSLog(@"REQUEST:%@",request);
@@ -546,6 +584,7 @@ static int maxFileSize = 250*1024;
     [[NSOperationQueue mainQueue] addOperation:op];
 }
 
+#pragma mark - 获取支付宝的信息
 - (void)loadAlipayInfo {
     NSMutableURLRequest *request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"GET" URLString:[[NSUserDefaults standardUserDefaults] objectForKey:@"rootURL"] parameters:@{@"action":@"PayPal", @"userid":[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"], @"operation":@"get"} error:nil];
     NSLog(@"REQUEST:%@",request);
@@ -570,22 +609,18 @@ static int maxFileSize = 250*1024;
     [[NSOperationQueue mainQueue] addOperation:op];
 }
 
+#pragma mark - 更新图片
 - (void)uploadPhotoForKey:(NSString *)key imageData:(NSData *)imageData{
     
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] init];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
-    
-    
     NSDictionary *parameters = @{@"userid":[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"],
                                  @"key":key,
                                  @"value":[imageData base64Encoding]
                                  };
-    
     NSString *postURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"rootURL"];
     postURL = [postURL stringByAppendingString:@"?action=UpdateUserImg"];
-    
-    
     
     [manager POST:postURL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         
@@ -617,5 +652,59 @@ static int maxFileSize = 250*1024;
         [HUD removeFromSuperview];
         HUD = nil;
     }];
+}
+
+#pragma mark - 检验手机号码
+- (BOOL)isMobileNumber:(NSString *)mobileNum
+{
+    NSString * MOBILE = @"^1(3[0-9]|5[0-35-9]|8[025-9])\\d{8}$";
+    NSString * CM = @"^1(34[0-8]|(3[5-9]|5[017-9]|8[278])\\d)\\d{7}$";
+    NSString * CU = @"^1(3[0-2]|5[256]|8[56])\\d{8}$";
+    NSString * CT = @"^1((33|53|8[09])[0-9]|349)\\d{7}$";
+    // NSString * PHS = @"^0(10|2[0-5789]|\\d{3})\\d{7,8}$";
+    NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
+    NSPredicate *regextestcm = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", CM];
+    NSPredicate *regextestcu = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", CU];
+    NSPredicate *regextestct = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", CT];
+    if (([regextestmobile evaluateWithObject:mobileNum] == YES)
+        || ([regextestcm evaluateWithObject:mobileNum] == YES)
+        || ([regextestct evaluateWithObject:mobileNum] == YES)
+        || ([regextestcu evaluateWithObject:mobileNum] == YES))
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+}
+
+#pragma mark - 检验邮件
+//利用正则表达式验证
+-(BOOL)isValidateEmail:(NSString *)email {
+    NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:email];
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(alertView.tag == 1212)
+    {
+        switch (buttonIndex) {
+            case 1:
+                [self.navigationController popViewControllerAnimated:YES];
+                break;
+            case 0:
+            {
+                JABasicInfoTableViewController *vc = [[JABasicInfoTableViewController alloc] init];
+                vc.title = @"支付宝";
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+                break;
+            default:
+                break;
+        }
+    }
 }
 @end

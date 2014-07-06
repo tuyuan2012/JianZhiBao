@@ -10,7 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "JALoginViewController.h"
 #import "MBProgressHUD.h"
-@interface JAWorkDetailViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,CLLocationManagerDelegate>
+@interface JAWorkDetailViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,CLLocationManagerDelegate,UIAlertViewDelegate>
 {
     MBProgressHUD *HUD;
 }
