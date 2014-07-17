@@ -12,7 +12,9 @@
 	#import <UIKit/UIKit.h>
 	#import <Foundation/Foundation.h>
     #import "AFNetworking.h"
-
+    #import "UIImageView+WebCache.h"
+    #import "UIViewController+ExtendViewController.h"
+    #import "MainStatic.h"
 
 #endif
 

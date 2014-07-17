@@ -11,7 +11,7 @@
 #import "JAInfoPhotoTableViewCell.h"
 #import "JABankInfoTableViewCell.h"
 #import "IBActionSheet.h"
-#import <SDWebImage/UIImageView+WebCache.h>
+#import "UIImageView+WebCache.h"
 
 #define kTextCellID @"textCellID"
 #define kPhotoCellID @"photoCellID"

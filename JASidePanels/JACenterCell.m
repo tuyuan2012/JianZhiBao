@@ -7,7 +7,7 @@
 //
 
 #import "JACenterCell.h"
-#import <SDWebImage/SDImageCache.h>
+#import "SDImageCache.h"
 
 @interface JACenterCell()
 

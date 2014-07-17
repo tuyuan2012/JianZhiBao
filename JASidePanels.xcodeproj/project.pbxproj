@@ -309,7 +309,7 @@
 		71D8638A18D1D64800467843 /* 最新.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "最新.gif"; sourceTree = "<group>"; };
 		71D8639118D1D86C00467843 /* 头像.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "头像.png"; sourceTree = "<group>"; };
 		95322A701517AEEB0069C8D7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		9561ACAD151286EE005889C6 /* 兼职宝.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "兼职宝.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9561ACAD151286EE005889C6 /* 兼职宝2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "兼职宝2.0.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9561ACB1151286EE005889C6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9561ACB3151286EE005889C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9561ACB5151286EE005889C6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -400,6 +400,7 @@
 		EA3B8B96196A63D400B285E7 /* libWeChatSDK */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK; sourceTree = "<group>"; };
 		EA3B8B97196A63D400B285E7 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		EA3B8B98196A63D400B285E7 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
+		EAC9D47B19777B9500B1F35F /* MainStatic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainStatic.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -714,7 +715,7 @@
 		9561ACAE151286EE005889C6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9561ACAD151286EE005889C6 /* 兼职宝.app */,
+				9561ACAD151286EE005889C6 /* 兼职宝2.0.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -763,6 +764,7 @@
 		9561AD0C15130E96005889C6 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				EAC9D47B19777B9500B1F35F /* MainStatic.h */,
 				472E41171924A52C000D0123 /* Nibs */,
 				47E894D719208C840063DDAF /* UserInfo */,
 				713C862A18CDF3DD00D0858B /* SVPullToRefresh.h */,
@@ -949,7 +951,7 @@
 			);
 			name = JASidePanels;
 			productName = JASidePanels;
-			productReference = 9561ACAD151286EE005889C6 /* 兼职宝.app */;
+			productReference = 9561ACAD151286EE005889C6 /* 兼职宝2.0.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1162,8 +1164,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Jiexin Zhang (QVF932424T)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jiexin Zhang (QVF932424T)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: 盈超 廖 (67VNNZ6XH5)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 盈超 廖 (67VNNZ6XH5)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1183,7 +1185,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "F4690FE9-254A-4E0D-92A0-5F7A23D536A2";
+				PROVISIONING_PROFILE = "5E5B6BB5-A94C-4B85-9D03-5E6955843CFE";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1200,8 +1202,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Jiexin Zhang (QVF932424T)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jiexin Zhang (QVF932424T)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: SunboxSoft Inc.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: SunboxSoft Inc.";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -1214,7 +1216,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "F4690FE9-254A-4E0D-92A0-5F7A23D536A2";
+				PROVISIONING_PROFILE = "4B97B5AE-7E36-452A-830A-7387F956316C";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1228,7 +1230,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: PENG LI (VDD95KJR47)";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: PENG LI (VDD95KJR47)";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: 盈超 廖 (67VNNZ6XH5)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/JASidePanels/Libs",
@@ -1246,8 +1248,8 @@
 					"$(PROJECT_DIR)/libs/WX",
 				);
 				OTHER_LDFLAGS = "-all_load";
-				PRODUCT_NAME = "兼职宝";
-				PROVISIONING_PROFILE = "788926E8-095C-4694-8E7B-870FC5384B01";
+				PRODUCT_NAME = "兼职宝2.0";
+				PROVISIONING_PROFILE = "5E5B6BB5-A94C-4B85-9D03-5E6955843CFE";
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1280,7 +1282,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-all_load";
-				PRODUCT_NAME = "兼职宝";
+				PRODUCT_NAME = "兼职宝2.0";
 				PROVISIONING_PROFILE = "20DEC2C7-7EF1-487C-901B-5BCCEEC54439";
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
 				WRAPPER_EXTENSION = app;

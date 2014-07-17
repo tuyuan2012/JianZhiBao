@@ -9,8 +9,8 @@
 #import "JAUserInfoViewController.h"
 #import "JABasicInfoTableViewController.h"
 #import "JAPasswordChangeViewController.h"
-
-#import <SDWebImage/UIImageView+WebCache.h>
+#import "SDImageCache.h"
+#import "UIImageView+WebCache.h"
 
 @interface JAUserInfoViewController ()
 

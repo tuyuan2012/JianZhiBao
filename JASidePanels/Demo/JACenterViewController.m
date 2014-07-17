@@ -25,7 +25,7 @@
 
 #import "JACenterViewController.h"
 #import "AFHTTPRequestOperationManager.h"
-#import <SDWebImage/UIImageView+WebCache.h>
+#import "UIImageView+WebCache.h"
 
 static const CGFloat kHeightOfTopScrollView = 44.0f;
 static const CGFloat kHeightOfNavigationBar = 44.0f;
