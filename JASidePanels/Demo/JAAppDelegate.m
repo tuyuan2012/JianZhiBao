@@ -47,7 +47,7 @@
         [ud setObject:@"" forKey:@"user_id"];
     }
 //    [ud setObject:@"http://jzb.cloudapp.net/Client.ashx" forKey:@"rootURL"];
-    [ud setObject:@"http://www.jzb24.com/Client_v1.1.ashx" forKey:@"rootURL"];
+    [ud setObject:Main_Domain forKey:@"rootURL"];//@"http://www.jzb24.com/Client_v1.1.ashx"
     
     [MobClick startWithAppkey:@"536b96ad56240b0a65023564"];
     
