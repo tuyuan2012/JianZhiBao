@@ -8,7 +8,6 @@
 
 #import "JAWorkDetailViewController.h"
 #import "JAInputUserInfoTableViewController.h"
-#import <Frontia/Frontia.h>
 #import "JABasicInfoTableViewController.h"
 @interface JAWorkDetailViewController ()
 @property (nonatomic) NSInteger type;
@@ -105,7 +104,8 @@
     FrontiaShare *share = [Frontia getShare];
     
     //[share registerQQAppId:@"100358052" enableSSO:YES];
-    [share registerWeixinAppId:@"174203699"];
+    [share registerWeixinAppId:kWeiXin_APP_KEY];
+    [share registerQQAppId:kTenXunWeibo_APP_ID enableSSO:YES];
     //[share registerSinaweiboAppId:@""];
     
     //授权取消回调函数
@@ -300,12 +300,14 @@
     
     //判断用户信息是否完整
     [self checkUserInfoFull];
+    //[self submitApplyInfo];
 }
 
 -(void)submitApplyInfo
 {
     self.nowloading = [NSNumber numberWithBool:YES];
     [self showProgressDialog];
+    NSLog(@"self.taskId%@",self.taskId);
     NSMutableURLRequest *request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"GET" URLString:[[NSUserDefaults standardUserDefaults] objectForKey:@"rootURL"] parameters:@{@"action":@"ApplyTask",@"userid":[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"],@"taskid":self.taskId} error:nil];
     NSLog(@"%@", request);
     AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
@@ -313,6 +315,7 @@
     op.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
+        NSLog(@"--->%@",[responseObject objectForKey:@"status"]);
         [HUD removeFromSuperview];
         if ([[responseObject objectForKey:@"result"] isEqualToString:@"ok"]) {
             if ([[responseObject objectForKey:@"status"] isEqualToString:@"成功"]) {
@@ -372,6 +375,7 @@
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
         [HUD removeFromSuperview];
+        NSLog(@"审核状态%@",[responseObject objectForKey:@"审核状态"]);
         if ([[responseObject objectForKey:@"result"] isEqualToString:@"ok"]) {
             self.mainListDic = responseObject;
             //            if ([[responseObject objectForKey:@"审核状态"] isEqualToString:@"工作中"]) {
@@ -511,7 +515,7 @@
 {
     NSMutableURLRequest *request;
     //更新个人信息
-    request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"GET" URLString:[NSString stringWithFormat:@"%@%@",Main_Domain,@"/api/user/info-complete"] parameters:@{@"user_id":[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"]} error:nil];
+    request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"GET" URLString:[NSString stringWithFormat:@"%@%@",Main_Domain,@"/api/user/info-complete"] parameters:@{@"userid":[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"]} error:nil];
     AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     op.responseSerializer = [AFJSONResponseSerializer serializer];
     op.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
@@ -524,7 +528,7 @@
             }
         }
         else {
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提醒" message:@"你的个人信息不完整！请进行编辑" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: @"稍等",nil];
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提醒" message:kUserInfoFull_Warm_Mess delegate:self cancelButtonTitle:@"确定" otherButtonTitles: @"稍等",nil];
             alert.tag = 1212;
             [alert show];
         }

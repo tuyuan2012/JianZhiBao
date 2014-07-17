@@ -84,7 +84,6 @@
         leftView.frame =CGRectMake(0, 44,self.view.frame.size.width, self.view.frame.size.height-44);
     }
     
-    
     //网络获取数据
     self.mainListDic = [[NSMutableDictionary alloc]init];
     self.incomeListDic = [[NSMutableDictionary alloc]init];
@@ -203,17 +202,19 @@
                 cell.title.font = [UIFont boldSystemFontOfSize:12.0f];
                 cell.title.frame =CGRectMake(80, 23, 100, 20);
                 [cell.image setImage:[UIImage imageNamed:@"头像.png"]];
-                NSString *imageURL = nil;
-                if(_mainListDic[@"头像"] && ![_mainListDic[@"头像"] isEqualToString:@""])
-                    imageURL = [[@"http://www.jzb24.com/" stringByAppendingString:_mainListDic[@"头像"]]  stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-                else
-                    [cell.image setImage:[UIImage imageNamed:@"头像.png"]];
-                
-                if ([imageURL length]) {
-                    NSURL *url = [NSURL URLWithString:imageURL];
-                    [cell.image setImageWithURL:url
-                               placeholderImage:nil];
-                }
+                //头像写死
+//                NSString *imageURL = nil;
+//                
+//                if(_mainListDic[@"头像"] && ![_mainListDic[@"头像"] isEqualToString:@""])
+//                    imageURL = [[@"http://www.jzb24.com/" stringByAppendingString:_mainListDic[@"头像"]]  stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//                else
+//                    [cell.image setImage:[UIImage imageNamed:@"头像.png"]];
+//                
+//                if ([imageURL length]) {
+//                    NSURL *url = [NSURL URLWithString:imageURL];
+//                    [cell.image setImageWithURL:url
+//                               placeholderImage:nil];
+//                }
 
                 
                 cell.image.frame = CGRectMake(10, 13, 50, 50);

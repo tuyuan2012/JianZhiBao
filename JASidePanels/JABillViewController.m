@@ -7,7 +7,6 @@
 //
 
 #import "JABillViewController.h"
-#import <Frontia/Frontia.h>
 @interface JABillViewController ()
 
 @end
@@ -172,7 +171,8 @@
     
     //[share registerQQAppId:@"100358052" enableSSO:YES];
     //微信，测试的appId
-    [share registerWeixinAppId:@"174203699"];
+    [share registerWeixinAppId:kWeiXin_APP_KEY];
+    [share registerQQAppId:kTenXunWeibo_APP_ID enableSSO:YES];
     //[share registerSinaweiboAppId:@""];
     
     //授权取消回调函数

@@ -393,15 +393,16 @@ static int maxFileSize = 250*1024;
         //检查数据的有效性
         if([self checkInfoWith:_userInfoArray]){
             [self updateUserAllInfoWith:_userInfoArray];
-            //[self updateUserInfo:_userInfoArray];
+           // [self updateUserInfo:_userInfoArray];
         }
-    }else
-    {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:@"请等待数据加载完毕" delegate:nil cancelButtonTitle:@"好" otherButtonTitles: nil];
-        [alert show];
-        
-        return;
     }
+//    else
+//    {
+//        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:@"请等待数据加载完毕" delegate:nil cancelButtonTitle:@"好" otherButtonTitles: nil];
+//        [alert show];
+//        
+//        return;
+//    }
     
 }
 
@@ -448,7 +449,7 @@ static int maxFileSize = 250*1024;
         NSMutableURLRequest *request;
         
         //更新个人信息
-        request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"GET" URLString:[NSString stringWithFormat:@"%@%@",Main_Domain,@"/api/user/update"] parameters:@{@"user_id":[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"], @"name":[info objectAtIndex:0],@"gender":[info objectAtIndex:1],@"age":[info objectAtIndex:2],@"email":[info objectAtIndex:3],@"phone":[info objectAtIndex:4],@"telephone":[info objectAtIndex:5], @"qq":[info objectAtIndex:6]} error:nil];
+        request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"GET" URLString:[NSString stringWithFormat:@"%@%@",Main_Domain,@"/api/user/update"] parameters:@{@"userid":[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"], @"name":[info objectAtIndex:0],@"gender":[info objectAtIndex:1],@"age":[info objectAtIndex:2],@"email":[info objectAtIndex:3],@"phone":[info objectAtIndex:4],@"telephone":[info objectAtIndex:5], @"qq":[info objectAtIndex:6]} error:nil];
         
         AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
         op.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -479,10 +480,10 @@ static int maxFileSize = 250*1024;
 -(void)updateUserInfo:(NSArray *)info
 {
     NSDictionary *dict = @{@"user_id":@"152", @"name":[info objectAtIndex:0],@"gender":[info objectAtIndex:1],@"age":[info objectAtIndex:2],@"email":[info objectAtIndex:3],@"phone":[info objectAtIndex:4],@"telephone":[info objectAtIndex:5], @"qq":[info objectAtIndex:6]};
-    NSString *url = [NSString stringWithFormat:@"%@%@",Main_Domain,@"/api/user/update"];//你的接口地址
+    NSString *url = [NSString stringWithFormat:@"%@%@",@"http://172.16.128.123:8080/ECServer_D/",@"login"];//你的接口地址
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];//申明返回的结果是json类型
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];//如果报接受类型不一致请替换一致text/html或别的
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];//如果报接受类型不一致请替换一致text/html或别的
     manager.requestSerializer=[AFJSONRequestSerializer serializer];//申明请求的数据是json类型
     [manager POST:url parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@", responseObject);
@@ -538,16 +539,21 @@ static int maxFileSize = 250*1024;
 		 * "性别":"女","健康证照片反面":"","身份证照片反面":"",
 		 * "手机号":"13972372582","qq号":"","头像":"","出生日期":"","邮箱":""}
 		 * */
-        self.mainInfoDic = [responseObject mutableCopy];
-        
-        _userInfoArray = [[NSMutableArray alloc] initWithObjects:_mainInfoDic[@"姓名"], ![_mainInfoDic[@"性别"] isEqualToString:@""]?_mainInfoDic[@"性别"]:@"女",_mainInfoDic[@"出生日期"],_mainInfoDic[@"邮箱"],_mainInfoDic[@"手机号"],_mainInfoDic[@"电话号码"],_mainInfoDic[@"qq号"], nil];
-        
-        if ([_mainInfoDic[@"性别"] isEqualToString:@"男"]) {
-            _genderSwitch.selectedSegmentIndex = 0;
-        } else {
-            _genderSwitch.selectedSegmentIndex = 1;
+        if(responseObject){
+            self.mainInfoDic = [responseObject mutableCopy];
+            
+            _userInfoArray = [[NSMutableArray alloc] initWithObjects:_mainInfoDic[@"姓名"], ![_mainInfoDic[@"性别"] isEqualToString:@""]?_mainInfoDic[@"性别"]:@"女",_mainInfoDic[@"出生日期"],_mainInfoDic[@"邮箱"],_mainInfoDic[@"手机号"],_mainInfoDic[@"电话号码"],_mainInfoDic[@"qq号"], nil];
+            
+            if ([_mainInfoDic[@"性别"] isEqualToString:@"男"]) {
+                _genderSwitch.selectedSegmentIndex = 0;
+            } else {
+                _genderSwitch.selectedSegmentIndex = 1;
+            }
         }
-        
+        else
+        {
+            
+        }
         [self.tableView reloadData];
         [self.tableView.pullToRefreshView stopAnimating];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
