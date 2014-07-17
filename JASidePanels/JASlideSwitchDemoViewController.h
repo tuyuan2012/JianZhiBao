@@ -21,4 +21,5 @@
 
 @property (nonatomic, strong) JACenterViewController *vc1;
 @property (nonatomic, strong) JACenterViewController *vc2;
+
 @end

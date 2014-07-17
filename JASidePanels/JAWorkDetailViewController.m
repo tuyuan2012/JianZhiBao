@@ -8,7 +8,7 @@
 
 #import "JAWorkDetailViewController.h"
 #import "JAInputUserInfoTableViewController.h"
-#import "JABasicInfoTableViewController.h"
+
 @interface JAWorkDetailViewController ()
 @property (nonatomic) NSInteger type;
 @property (strong, nonatomic) NSNumber *nowloading;
@@ -27,10 +27,6 @@
 @synthesize score;
 @synthesize price;
 @synthesize workState;
-/*
-    174203699
-    2d840b72a5b0a4fb61faf0738102f5a5
- */
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -39,7 +35,6 @@
         self.nowloading = [[NSNumber alloc]initWithBool:NO];
         self.nowTaskDoing = [[NSNumber alloc]initWithInt:0];
         // Custom initialization
-        [Frontia initWithApiKey:APP_KEY];
     }
     return self;
 }
@@ -88,81 +83,10 @@
 //    [self.endWorking.titleLabel setFont:[UIFont fontWithName:self.endWorking.titleLabel.font.fontName size:15]];
 //    [self.endWorking setBackgroundColor:[UIColor grayColor]];
 //    [self.view addSubview:self.endWorking];
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"BDSocialShareEditButton.png"] style:UIBarButtonItemStylePlain target:self action:@selector(share:)];
-    self.navigationItem.rightBarButtonItem.title = @"分享";
-    self.navigationItem.rightBarButtonItem.tintColor = [UIColor blueColor];
-    
     [self showProgressDialog];
     
     [self refresh];
     
-}
-
--(void)share:(UIButton *)sender
-{
-    FrontiaShare *share = [Frontia getShare];
-    
-    //[share registerQQAppId:@"100358052" enableSSO:YES];
-    [share registerWeixinAppId:kWeiXin_APP_KEY];
-    [share registerQQAppId:kTenXunWeibo_APP_ID enableSSO:YES];
-    //[share registerSinaweiboAppId:@""];
-    
-    //授权取消回调函数
-    FrontiaShareCancelCallback onCancel = ^(){
-        NSLog(@"OnCancel: share is cancelled");
-        [self showAlertWithInfo:@"取消分享"];
-    };
-    
-    //授权失败回调函数
-    FrontiaShareFailureCallback onFailure = ^(int errorCode, NSString *errorMessage){
-        NSLog(@"OnFailure: %d  %@", errorCode, errorMessage);
-        [self showAlertWithInfo:@"分享失败"];
-    };
-    
-    //授权成功回调函数
-    FrontiaMultiShareResultCallback onResult = ^(NSDictionary *respones){
-        NSLog(@"OnResult: %@", [respones description]);
-        [self showAlertWithInfo:@"分享成功"];
-    };
-    
-    FrontiaShareContent *content=[[FrontiaShareContent alloc] init];
-    content.url = @"http://www.jzb24.com";
-    content.title = @"兼职宝分享";
-    content.description = [NSString stringWithFormat:@"%@！猛戳详情连接：%@",[self.mainListDic objectForKey:@"标题"],@"http://www.jzb24.com/"];
-    content.imageObj = @"http://www.jzb24.com/index/images/logo_l.gif";
-    
-    NSArray *platforms = @[FRONTIA_SOCIAL_SHARE_PLATFORM_WEIXIN_TIMELINE,FRONTIA_SOCIAL_SHARE_PLATFORM_WEIXIN_SESSION,FRONTIA_SOCIAL_SHARE_PLATFORM_SINAWEIBO,FRONTIA_SOCIAL_SHARE_PLATFORM_QQWEIBO,FRONTIA_SOCIAL_SHARE_PLATFORM_QQ,FRONTIA_SOCIAL_SHARE_PLATFORM_RENREN,FRONTIA_SOCIAL_SHARE_PLATFORM_KAIXIN];
-    
-    [share showShareMenuWithShareContent:content displayPlatforms:platforms supportedInterfaceOrientations:UIInterfaceOrientationMaskPortrait isStatusBarHidden:NO targetViewForPad:sender cancelListener:onCancel failureListener:onFailure resultListener:onResult];
-}
-
-- (void)showAlertWithInfo:(NSString *)str
-{
-    UILabel *alert = [[UILabel alloc]init];
-    alert.bounds = CGRectMake(0, 0, 150, 30);
-    alert.center = CGPointMake(kScreen_Width / 2, kScreen_Height - 200);
-    alert.backgroundColor = [UIColor colorWithWhite:.2 alpha:.8];
-    alert.text = str;
-    alert.textColor = [UIColor whiteColor];
-    alert.textAlignment = NSTextAlignmentCenter;
-    alert.font = [UIFont systemFontOfSize:12];
-    alert.alpha = 0.0;
-    alert.layer.cornerRadius = 10.0;
-    alert.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    alert.layer.shadowRadius = 10.0;
-    alert.layer.shadowOpacity = 5;
-    alert.clipsToBounds = YES;
-    [self.view addSubview:alert];
-    [UIView animateWithDuration:.5 animations:^{
-        alert.alpha = 1.0;
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:.5 delay:1.0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
-            alert.alpha = 0.0;
-        } completion:^(BOOL finished) {
-            [alert removeFromSuperview];
-        }];
-    }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -297,67 +221,47 @@
         [self.navigationController pushViewController:nextpage animated:YES];
         return;
     }
-    
-    //判断用户信息是否完整
-    [self checkUserInfoFull];
-    //[self submitApplyInfo];
-}
-
--(void)submitApplyInfo
-{
-    self.nowloading = [NSNumber numberWithBool:YES];
-    [self showProgressDialog];
-    NSLog(@"self.taskId%@",self.taskId);
-    NSMutableURLRequest *request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"GET" URLString:[[NSUserDefaults standardUserDefaults] objectForKey:@"rootURL"] parameters:@{@"action":@"ApplyTask",@"userid":[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"],@"taskid":self.taskId} error:nil];
-    NSLog(@"%@", request);
-    AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    op.responseSerializer = [AFJSONResponseSerializer serializer];
-    op.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
-        NSLog(@"--->%@",[responseObject objectForKey:@"status"]);
-        [HUD removeFromSuperview];
-        if ([[responseObject objectForKey:@"result"] isEqualToString:@"ok"]) {
-            if ([[responseObject objectForKey:@"status"] isEqualToString:@"成功"]) {
-                if (_type) {
-                    [self refresh];
-                } else {
-                    [self.workState setTitle:@"已申请" forState:UIControlStateNormal];
-                    [self.workState setBackgroundColor:[UIColor grayColor]];
-                    [self.workState setEnabled:NO];
+    if (![self.nowloading boolValue]) {
+        self.nowloading = [NSNumber numberWithBool:YES];
+        [self showProgressDialog];
+        NSMutableURLRequest *request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"GET" URLString:[[NSUserDefaults standardUserDefaults] objectForKey:@"rootURL"] parameters:@{@"action":@"ApplyTask",@"userid":[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"],@"taskid":self.taskId} error:nil];
+        NSLog(@"%@", request);
+        AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+        op.responseSerializer = [AFJSONResponseSerializer serializer];
+        op.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+        [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"JSON: %@", responseObject);
+            [HUD removeFromSuperview];
+            if ([[responseObject objectForKey:@"result"] isEqualToString:@"ok"]) {
+                if ([[responseObject objectForKey:@"status"] isEqualToString:@"成功"]) {
+                    if (_type) {
+                        [self refresh];
+                    } else {
+                        [self.workState setTitle:@"已申请" forState:UIControlStateNormal];
+                        [self.workState setBackgroundColor:[UIColor grayColor]];
+                        [self.workState setEnabled:NO];
+                    }
+                    
+                    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:@"申请成功" delegate:nil cancelButtonTitle:@"好" otherButtonTitles: nil];
+                    [alert show];
                 }
-                
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:@"申请成功" delegate:nil cancelButtonTitle:@"好" otherButtonTitles: nil];
-                [alert show];
+                else {
+                    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"出错" message:[responseObject objectForKey:@"status"] delegate:nil cancelButtonTitle:@"好" otherButtonTitles: nil];
+                    [alert show];
+                }
             }
             else {
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"出错" message:[responseObject objectForKey:@"status"] delegate:nil cancelButtonTitle:@"好" otherButtonTitles: nil];
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"服务器出错" message:[responseObject objectForKey:@"result"] delegate:nil cancelButtonTitle:@"好" otherButtonTitles: nil];
                 [alert show];
             }
-        }
-        else {
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"服务器出错" message:[responseObject objectForKey:@"result"] delegate:nil cancelButtonTitle:@"好" otherButtonTitles: nil];
-            [alert show];
-        }
-        self.nowloading = [NSNumber numberWithBool:NO];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        self.nowloading = [NSNumber numberWithBool:NO];
-    }];
-    [[NSOperationQueue mainQueue] addOperation:op];
+            self.nowloading = [NSNumber numberWithBool:NO];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Error: %@", error);
+            self.nowloading = [NSNumber numberWithBool:NO];
+        }];
+        [[NSOperationQueue mainQueue] addOperation:op];
+    }
 }
-
-#pragma mark - 个人信息是否完成
--(BOOL)isIndividualInfoFinished
-{
-    /*
-     此处有一个网络请求，用来请求个人信息是否完善成功！
-     */
-    
-    return  false;
-}
-
-
 
 - (void)inputPersonInfo {
     JAInputUserInfoTableViewController *infoVC = [[JAInputUserInfoTableViewController alloc] init];
@@ -375,7 +279,6 @@
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
         [HUD removeFromSuperview];
-        NSLog(@"审核状态%@",[responseObject objectForKey:@"审核状态"]);
         if ([[responseObject objectForKey:@"result"] isEqualToString:@"ok"]) {
             self.mainListDic = responseObject;
             //            if ([[responseObject objectForKey:@"审核状态"] isEqualToString:@"工作中"]) {
@@ -509,54 +412,5 @@
     }];
 }
 
-
-#pragma mark - 判断用户信息是否完整
--(void)checkUserInfoFull
-{
-    NSMutableURLRequest *request;
-    //更新个人信息
-    request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"GET" URLString:[NSString stringWithFormat:@"%@%@",Main_Domain,@"/api/user/info-complete"] parameters:@{@"userid":[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"]} error:nil];
-    AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    op.responseSerializer = [AFJSONResponseSerializer serializer];
-    op.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
-    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
-        [HUD removeFromSuperview];
-        if ([[responseObject objectForKey:@"result"] isEqualToString:@"yes"]) {
-            if (![self.nowloading boolValue]) {
-                [self submitApplyInfo];
-            }
-        }
-        else {
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提醒" message:kUserInfoFull_Warm_Mess delegate:self cancelButtonTitle:@"确定" otherButtonTitles: @"稍等",nil];
-            alert.tag = 1212;
-            [alert show];
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-    }];
-    [[NSOperationQueue mainQueue] addOperation:op];
-}
-
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if(alertView.tag == 1212)
-    {
-        switch (buttonIndex) {
-            case 1:
-                [self.navigationController popViewControllerAnimated:YES];
-                break;
-            case 0:
-            {
-                JABasicInfoTableViewController *vc = [[JABasicInfoTableViewController alloc] init];
-                vc.title = @"个人信息";
-                [self.navigationController pushViewController:vc animated:YES];
-            }
-                break;
-            default:
-                break;
-        }
-    }
-}
 @end
 

@@ -26,10 +26,11 @@
 
 #import <UIKit/UIKit.h>
 #import "UIImageView+AFNetworking.h"
-#import "CustomAlertView.h"
+
+
 @class JASidePanelController;
 
-@interface JAAppDelegate : UIResponder <UIApplicationDelegate,UIAlertViewDelegate,CustomeAlertViewDelegate>
+@interface JAAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

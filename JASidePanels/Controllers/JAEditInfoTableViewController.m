@@ -11,7 +11,7 @@
 
 @interface JAEditInfoTableViewController ()
 
-@property (strong, nonatomic)IBOutlet UITableViewCell *c0;
+@property (strong, nonatomic) IBOutlet UITableViewCell *c0;
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 
 @end
@@ -37,6 +37,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     if (![_textField.text isEqualToString:_prevText]) {
+        
         // Tell the parent ViewController to Refresh data
         __block __weak UIViewController *vc = nil;
         NSArray *viewControllers = [[self navigationController] viewControllers];

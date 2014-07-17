@@ -10,7 +10,7 @@
 #import "MBProgressHUD.h"
 #import "SVPullToRefresh.h"
 
-@interface JABasicInfoTableViewController : UITableViewController<UIAlertViewDelegate> {
+@interface JABasicInfoTableViewController : UITableViewController {
     MBProgressHUD *HUD;
 }
 

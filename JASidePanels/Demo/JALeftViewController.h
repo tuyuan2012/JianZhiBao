@@ -36,8 +36,7 @@
 #import "JASuggestionViewController.h"
 #import "JANewIntroViewController.h"
 #import "JAPasswordChangeViewController.h"
-#import "CustomAlertView.h"
-@interface JALeftViewController : JADebugViewController<UITableViewDataSource,UITableViewDelegate,CustomeAlertViewDelegate>
+@interface JALeftViewController : JADebugViewController<UITableViewDataSource,UITableViewDelegate>
 {
     MBProgressHUD *HUD;
 }

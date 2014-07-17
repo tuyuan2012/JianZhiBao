@@ -7,6 +7,7 @@
 //
 
 #import "JAMeController.h"
+
 @interface JAMeController ()
 
 @end
@@ -40,12 +41,10 @@
     }];
     [[NSOperationQueue mainQueue] addOperation:op];
 }
-
 - (void)reloadlabel
 {
     [jifen setText:[self.mainListDic objectForKey:@"total"]];
 }
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -78,11 +77,10 @@
     [self.view addSubview:headView];
     [self.view addSubview:tableView];
     
-    [Frontia initWithApiKey:APP_KEY];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"BDSocialShareEditButton.png"] style:UIBarButtonItemStylePlain target:self action:@selector(share:)];
-    self.navigationItem.rightBarButtonItem.title = @"分享";
-    self.navigationItem.rightBarButtonItem.tintColor = [UIColor blueColor];
+
 }
+
+
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -163,82 +161,6 @@
 }
 
 
-#pragma mark - 分享
--(void)share:(UIButton *)sender
-{
-    FrontiaShare *share = [Frontia getShare];
-    
-    //[share registerQQAppId:@"100358052" enableSSO:YES];
-    //微信，测试的appId
-    [share registerWeixinAppId:kWeiXin_APP_KEY];
-    [share registerQQAppId:kTenXunWeibo_APP_ID enableSSO:YES];
-    //[share registerSinaweiboAppId:@""];
-    
-    //授权取消回调函数
-    FrontiaShareCancelCallback onCancel = ^(){
-        NSLog(@"OnCancel: share is cancelled");
-        [self showAlertWithInfo:@"取消分享"];
-    };
-    
-    //授权失败回调函数
-    FrontiaShareFailureCallback onFailure = ^(int errorCode, NSString *errorMessage){
-        NSLog(@"OnFailure: %d  %@", errorCode, errorMessage);
-        [self showAlertWithInfo:@"分享失败"];
-    };
-    
-    //授权成功回调函数
-    FrontiaMultiShareResultCallback onResult = ^(NSDictionary *respones){
-        NSLog(@"OnResult: %@", [respones description]);
-        [self showAlertWithInfo:@"分享成功"];
-    };
-    
-    FrontiaShareContent *content=[[FrontiaShareContent alloc] init];
-    content.url = @"http://www.jzb24.com";
-    content.title = @"兼职宝分享";
-    content.description = [NSString stringWithFormat:@"%@！猛戳详情连接：",@"秀秀我的信誉!"];
-    
-    /*
-     图片是截view,截取tableView
-     */
-    UIGraphicsBeginImageContext(self.view.bounds.size);     //currentView 当前的view  创建一个基于位图的图形上下文并指定大小为
-    [self.tableView.layer renderInContext:UIGraphicsGetCurrentContext()];//renderInContext呈现接受者及其子范围到指定的上下文
-    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();//返回一个基于当前图形上下文的图片
-    UIGraphicsEndImageContext();//移除栈顶的基于当前位图的图形上下文
-    
-    content.imageObj = viewImage;//@"http://www.jzb24.com/index/images/logo_l.gif";
-    
-    NSArray *platforms = @[FRONTIA_SOCIAL_SHARE_PLATFORM_WEIXIN_TIMELINE,FRONTIA_SOCIAL_SHARE_PLATFORM_WEIXIN_SESSION,FRONTIA_SOCIAL_SHARE_PLATFORM_SINAWEIBO,FRONTIA_SOCIAL_SHARE_PLATFORM_QQWEIBO,FRONTIA_SOCIAL_SHARE_PLATFORM_QQ,FRONTIA_SOCIAL_SHARE_PLATFORM_RENREN,FRONTIA_SOCIAL_SHARE_PLATFORM_KAIXIN];
-    
-    [share showShareMenuWithShareContent:content displayPlatforms:platforms supportedInterfaceOrientations:UIInterfaceOrientationMaskPortrait isStatusBarHidden:NO targetViewForPad:sender cancelListener:onCancel failureListener:onFailure resultListener:onResult];
-}
-
-- (void)showAlertWithInfo:(NSString *)str
-{
-    UILabel *alert = [[UILabel alloc]init];
-    alert.bounds = CGRectMake(0, 0, 150, 30);
-    alert.center = CGPointMake(kScreen_Width / 2, kScreen_Height - 200);
-    alert.backgroundColor = [UIColor colorWithWhite:.2 alpha:.8];
-    alert.text = str;
-    alert.textColor = [UIColor whiteColor];
-    alert.textAlignment = NSTextAlignmentCenter;
-    alert.font = [UIFont systemFontOfSize:12];
-    alert.alpha = 0.0;
-    alert.layer.cornerRadius = 10.0;
-    alert.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    alert.layer.shadowRadius = 10.0;
-    alert.layer.shadowOpacity = 5;
-    alert.clipsToBounds = YES;
-    [self.view addSubview:alert];
-    [UIView animateWithDuration:.5 animations:^{
-        alert.alpha = 1.0;
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:.5 delay:1.0 options:UIViewAnimationOptionCurveEaseInOut  animations:^{
-            alert.alpha = 0.0;
-        } completion:^(BOOL finished) {
-            [alert removeFromSuperview];
-        }];
-    }];
-}
 
 
 @end

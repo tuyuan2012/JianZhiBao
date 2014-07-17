@@ -10,8 +10,8 @@
 #import "JABasicInfoTableViewController.h"
 #import "JAPasswordChangeViewController.h"
 
-#import "UIImageView+WebCache.h"
-#import "SDImageCache.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+
 @interface JAUserInfoViewController ()
 
 @property (nonatomic) NSArray *sectionTextArray;
@@ -34,13 +34,12 @@
 {
     [super viewDidLoad];
     
-    _sectionTextArray = @[@"基本资料",@"支付信息", @"身份认证", @"账号安全"];
+    _sectionTextArray = @[@"基本资料", @"身份认证", @"支付信息", @"账号安全"];
     
     _cellTextArray = [[NSMutableArray alloc] initWithCapacity:[_sectionTextArray count]];
-//    [_cellTextArray addObject:@[@"基本信息", @"联系方式"]];
-    [_cellTextArray addObject:@[@"个人信息"]];
-    [_cellTextArray addObject:@[@"支付宝", @"银行账号"]];
+    [_cellTextArray addObject:@[@"基本信息", @"联系方式"]];
     [_cellTextArray addObject:@[@"身份证", @"健康证", @"学生证"]];
+    [_cellTextArray addObject:@[@"银行账号", @"支付宝"]];
     [_cellTextArray addObject:@[@"修改登录密码"]];
     
     self.title = @"个人信息";

@@ -7,7 +7,7 @@
 //
 
 #import "JAInfoPhotoTableViewCell.h"
-
+#import <SDWebImage/UIImageView+WebCache.h>
 
 
 @interface JAInfoPhotoTableViewCell ()

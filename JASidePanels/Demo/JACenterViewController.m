@@ -25,7 +25,7 @@
 
 #import "JACenterViewController.h"
 #import "AFHTTPRequestOperationManager.h"
-
+#import <SDWebImage/UIImageView+WebCache.h>
 
 static const CGFloat kHeightOfTopScrollView = 44.0f;
 static const CGFloat kHeightOfNavigationBar = 44.0f;
@@ -38,10 +38,6 @@ static const CGFloat kHeightOfStatusBar = 20.0f;
 @end
 
 @implementation JACenterViewController
-{
-    BOOL _isActivityApp;
-    NSString *_activityDetailId;
-}
 
 @synthesize rootView;
 
@@ -67,6 +63,7 @@ static const CGFloat kHeightOfStatusBar = 20.0f;
     } else {
         [self.rootView setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - kHeightOfTopScrollView - kHeightOfNavigationBar)];
     }
+    
 }
 
 - (void)viewDidLoad {
@@ -251,16 +248,4 @@ static const CGFloat kHeightOfStatusBar = 20.0f;
         HUD = nil;
     }];
 }
-
-#pragma mark - 接受通知，跳转到相应的详细页面
--(void)showDetailWith:(NSString *)detailId
-{
-    _isActivityApp = NO;
-    id nextpage = nil;
-    nextpage = [[JAWorkDetailViewController alloc] initWithType:_type];
-    [nextpage setTaskId:detailId];
-    JAAppDelegate *delegate = (JAAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [delegate.navController pushViewController:nextpage animated:YES];
-}
-
 @end

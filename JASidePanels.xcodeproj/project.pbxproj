@@ -379,7 +379,6 @@
 		CEB06191195D0DA700A054CF /* SDWebImageManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageManagerDelegate.h; sourceTree = "<group>"; };
 		CEB06192195D0DA700A054CF /* UIImageView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+WebCache.h"; sourceTree = "<group>"; };
 		CEB06193195D0DA700A054CF /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
-		EA235DC31975027E000FCEEC /* MainStatic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainStatic.h; sourceTree = "<group>"; };
 		EA3B8B81196A63D400B285E7 /* Frontia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Frontia.framework; sourceTree = "<group>"; };
 		EA3B8B82196A63D400B285E7 /* FrontiaSource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FrontiaSource.bundle; sourceTree = "<group>"; };
 		EA3B8B83196A63D400B285E7 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
@@ -781,7 +780,6 @@
 				713C861C18CDC3A400D0858B /* image */,
 				CE12F343196142E20002FF6F /* UIViewController+ExtendViewController.h */,
 				CE12F344196142E20002FF6F /* UIViewController+ExtendViewController.m */,
-				EA235DC31975027E000FCEEC /* MainStatic.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";

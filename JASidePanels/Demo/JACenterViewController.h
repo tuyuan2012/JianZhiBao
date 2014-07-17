@@ -45,5 +45,5 @@
 @property (nonatomic) NSInteger type;
 
 - (id)initWithType:(NSInteger)type;
--(void)showDetailWith:(NSString *)detailId;
+
 @end

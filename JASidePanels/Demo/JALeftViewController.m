@@ -34,6 +34,7 @@
 
 #import "MobClick.h"
 
+NSString *ITUNES_LINK = @"http://itunes.apple.com/app/id844687136";
 
 @interface JALeftViewController () <UIAlertViewDelegate>
 
@@ -75,7 +76,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    //[leftView reloadData];
+    [leftView reloadData];
 //    [self.parentViewController.navigationController setNavigationBarHidden:YES];
     [super viewWillAppear:animated];
     tabletag ++;
@@ -83,6 +84,7 @@
     if (tabletag > 2) {
         leftView.frame =CGRectMake(0, 44,self.view.frame.size.width, self.view.frame.size.height-44);
     }
+    
     
     //网络获取数据
     self.mainListDic = [[NSMutableDictionary alloc]init];
@@ -202,19 +204,15 @@
                 cell.title.font = [UIFont boldSystemFontOfSize:12.0f];
                 cell.title.frame =CGRectMake(80, 23, 100, 20);
                 [cell.image setImage:[UIImage imageNamed:@"头像.png"]];
-                //头像写死
-//                NSString *imageURL = nil;
-//                
-//                if(_mainListDic[@"头像"] && ![_mainListDic[@"头像"] isEqualToString:@""])
-//                    imageURL = [[@"http://www.jzb24.com/" stringByAppendingString:_mainListDic[@"头像"]]  stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//                else
-//                    [cell.image setImage:[UIImage imageNamed:@"头像.png"]];
-//                
-//                if ([imageURL length]) {
-//                    NSURL *url = [NSURL URLWithString:imageURL];
-//                    [cell.image setImageWithURL:url
-//                               placeholderImage:nil];
-//                }
+                
+                
+                NSString *imageURL = [[@"http://www.jzb24.com/" stringByAppendingString:_mainListDic[@"头像"]]  stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                
+                if ([imageURL length]) {
+                    NSURL *url = [NSURL URLWithString:imageURL];
+                    [cell.image setImageWithURL:url
+                               placeholderImage:nil];
+                }
 
                 
                 cell.image.frame = CGRectMake(10, 13, 50, 50);
@@ -387,14 +385,14 @@
 - (void)checkUpdateResult:(NSDictionary *)appInfo {
     NSLog(@"%@", appInfo);
     if ([appInfo[@"update"] boolValue]) {
-        CustomAlertView *aler = [[CustomAlertView alloc] initWithAlertStyle:Update_Style withObject:
-                                 [NSString stringWithFormat:@"有版本需要更新！\n%@",appInfo[@"update_log"]]];
-        aler.delegate = self;
-        [self.view addSubview:aler];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"版本更新" message:@"检测到新版本，您是否需要更新" delegate:self cancelButtonTitle:@"否" otherButtonTitles:@"是", nil];
+        alertView.tag = 1;
+        
+        [alertView show];
     } else {
-        CustomAlertView *aler = [[CustomAlertView alloc] initWithAlertStyle:Update_NoStyl withObject:@"已经是最新版本了啦！"];
-        aler.delegate = self;
-        [self.view addSubview:aler];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"无需更新" message:@"您已是最新版本，无需更新" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        
+        [alertView show];
     }
 }
 
@@ -402,10 +400,9 @@
 {
     if (alertView.tag == 1) {
         if (buttonIndex == 1) {
-            
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:ITUNES_LINK]];
         }
     } else if (buttonIndex == 1) {
-        //退出操作!
         //TODO:这个ud在系统底层还是没有清空？
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
         [ud setObject:@"" forKey:@"user_id"];
@@ -420,12 +417,5 @@
         [right viewWillAppear:YES];
         
     }
-}
-
-#pragma mark - CustomDelegate method
--(void)update
-{
-    //更新操作
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kITUNES_LINK]];
 }
 @end
