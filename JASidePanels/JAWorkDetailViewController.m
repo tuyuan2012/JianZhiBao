@@ -306,7 +306,6 @@
 -(void)submitApplyInfo
 {
     self.nowloading = [NSNumber numberWithBool:YES];
-    [self showProgressDialog];
     NSLog(@"self.taskId%@",self.taskId);
     NSMutableURLRequest *request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"GET" URLString:[[NSUserDefaults standardUserDefaults] objectForKey:@"rootURL"] parameters:@{@"action":@"ApplyTask",@"userid":[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"],@"taskid":self.taskId} error:nil];
     NSLog(@"%@", request);
@@ -514,6 +513,7 @@
 -(void)checkUserInfoFull
 {
     NSMutableURLRequest *request;
+     [self showProgressDialog];
     //更新个人信息
     request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"GET" URLString:[NSString stringWithFormat:@"%@%@",Main_Domain,@"/api/user/info-complete"] parameters:@{@"userid":[[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"]} error:nil];
     AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
@@ -521,13 +521,13 @@
     op.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
-        [HUD removeFromSuperview];
         if ([[responseObject objectForKey:@"result"] isEqualToString:@"yes"]) {
             if (![self.nowloading boolValue]) {
                 [self submitApplyInfo];
             }
         }
         else {
+            [HUD removeFromSuperview];
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提醒" message:kUserInfoFull_Warm_Mess delegate:self cancelButtonTitle:@"确定" otherButtonTitles: @"稍等",nil];
             alert.tag = 1212;
             [alert show];

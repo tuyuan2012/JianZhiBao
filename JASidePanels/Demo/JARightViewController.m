@@ -150,9 +150,9 @@
     JARightCell *cell = [[JARightCell alloc]init];
     cell.backgroundColor = [UIColor colorWithRed:50.0/255.0 green:50.0/255.0 blue:50.0/255 alpha:1.0];
     [cell.title setText:[singleInfo objectForKey:@"标题"]];
-    [cell.describe setText:@"结束时间："];
+   // [cell.describe setText:@"结束时间："];
     [cell.price setText:[singleInfo objectForKey:@"金额"]];
-    [cell.credit setText:[singleInfo objectForKey:@"结束时间"]];
+   // [cell.credit setText:[singleInfo objectForKey:@"结束时间"]];
     return cell;
 }
 
