@@ -11,7 +11,7 @@
 #import "JAInfoPhotoTableViewCell.h"
 #import "JABankInfoTableViewCell.h"
 #import "IBActionSheet.h"
-
+#import "ValidateTool.h"
 #define kTextCellID @"textCellID"
 #define kPhotoCellID @"photoCellID"
 #define kBankCellID @"bankCellID"
@@ -411,27 +411,37 @@ static int maxFileSize = 250*1024;
     NSArray *temparray = @[@"姓名", @"性别", @"年龄",@"邮箱", @"手机号", @"电话号码", @"qq号"];
     for(int i = 0;i < [infoArray count];i++)
     {
-        if([[infoArray objectAtIndex:i] isEqualToString:@""] || ![infoArray objectAtIndex:i])
+        if([[temparray objectAtIndex:i] isEqualToString:@"姓名"]
+           ||[[temparray objectAtIndex:i] isEqualToString:@"性别"]
+           ||[[temparray objectAtIndex:i] isEqualToString:@"年龄"])
         {
-            [self showAlertWithInfo:[NSString stringWithFormat:@"请输入%@",[temparray objectAtIndex:i]]];
-            return false;
-        }else
-        {
-            if([[temparray objectAtIndex:i] isEqualToString:@"手机号"])
-            {
-                if(![self isMobileNumber:[infoArray objectAtIndex:i]])
+            if([[infoArray objectAtIndex:i] isEqualToString:@""] || ![infoArray objectAtIndex:i])
+            {   //不允许为空
+                [self showAlertWithInfo:[NSString stringWithFormat:@"请输入%@",[temparray objectAtIndex:i]]];
+                return false;
+            }
+        }
+        else if([[temparray objectAtIndex:i] isEqualToString:@"手机号"])
+        {//检验手机号
+            if([[infoArray objectAtIndex:i] isEqualToString:@""] || ![infoArray objectAtIndex:i])
+            {   //不允许为空
+                [self showAlertWithInfo:[NSString stringWithFormat:@"请输入%@",[temparray objectAtIndex:i]]];
+                return false;
+            }
+            else{
+                if(![ValidateTool isMobileNumber:[infoArray objectAtIndex:i]])
                 {
                     [self showAlertWithInfo:@"请输入有效的手机号!"];
                     return false;
                 }
             }
-            else if([[temparray objectAtIndex:i] isEqualToString:@"邮箱"])
+        }
+        else if([[temparray objectAtIndex:i] isEqualToString:@"邮箱"])
+        {//检验邮箱，要么为空，要么正规！
+            if(![ValidateTool isValidateEmail:[infoArray objectAtIndex:i]])
             {
-                if(![self isValidateEmail:[infoArray objectAtIndex:i]])
-                {
-                    [self showAlertWithInfo:@"请输入有效的邮箱!"];
-                    return false;
-                }
+                [self showAlertWithInfo:@"请输入有效的邮箱!"];
+                return false;
             }
         }
     }
@@ -492,7 +502,6 @@ static int maxFileSize = 250*1024;
     }
      ];
 }
-
 
 - (void)updateInfoForKey:(NSString *)key value:(NSString *)value{
     key = [key isEqualToString:@"年龄"] ? @"出生日期" : key;
@@ -658,39 +667,6 @@ static int maxFileSize = 250*1024;
         [HUD removeFromSuperview];
         HUD = nil;
     }];
-}
-
-#pragma mark - 检验手机号码
-- (BOOL)isMobileNumber:(NSString *)mobileNum
-{
-    NSString * MOBILE = @"^1(3[0-9]|5[0-35-9]|8[025-9])\\d{8}$";
-    NSString * CM = @"^1(34[0-8]|(3[5-9]|5[017-9]|8[278])\\d)\\d{7}$";
-    NSString * CU = @"^1(3[0-2]|5[256]|8[56])\\d{8}$";
-    NSString * CT = @"^1((33|53|8[09])[0-9]|349)\\d{7}$";
-    // NSString * PHS = @"^0(10|2[0-5789]|\\d{3})\\d{7,8}$";
-    NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
-    NSPredicate *regextestcm = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", CM];
-    NSPredicate *regextestcu = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", CU];
-    NSPredicate *regextestct = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", CT];
-    if (([regextestmobile evaluateWithObject:mobileNum] == YES)
-        || ([regextestcm evaluateWithObject:mobileNum] == YES)
-        || ([regextestct evaluateWithObject:mobileNum] == YES)
-        || ([regextestcu evaluateWithObject:mobileNum] == YES))
-    {
-        return YES;
-    }
-    else
-    {
-        return NO;
-    }
-}
-
-#pragma mark - 检验邮件
-//利用正则表达式验证
--(BOOL)isValidateEmail:(NSString *)email {
-    NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
-    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
-    return [emailTest evaluateWithObject:email];
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

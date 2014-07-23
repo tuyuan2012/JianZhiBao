@@ -162,6 +162,8 @@
 		EA3B8B9E196A63D400B285E7 /* libWeiboSDK in Frameworks */ = {isa = PBXBuildFile; fileRef = EA3B8B93196A63D400B285E7 /* libWeiboSDK */; };
 		EA3B8B9F196A63D400B285E7 /* libWeChatSDK in Frameworks */ = {isa = PBXBuildFile; fileRef = EA3B8B96196A63D400B285E7 /* libWeChatSDK */; };
 		EA3B8BA0196A640000B285E7 /* JSONKit.h in Sources */ = {isa = PBXBuildFile; fileRef = EA3B8B83196A63D400B285E7 /* JSONKit.h */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		EA5DFE69197E05730076CEA1 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA5DFE68197E05730076CEA1 /* AdSupport.framework */; };
+		EA5DFE6C197E06490076CEA1 /* ValidateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5DFE6B197E06490076CEA1 /* ValidateTool.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -401,6 +403,9 @@
 		EA3B8B96196A63D400B285E7 /* libWeChatSDK */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK; sourceTree = "<group>"; };
 		EA3B8B97196A63D400B285E7 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		EA3B8B98196A63D400B285E7 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
+		EA5DFE68197E05730076CEA1 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		EA5DFE6A197E06490076CEA1 /* ValidateTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ValidateTool.h; sourceTree = "<group>"; };
+		EA5DFE6B197E06490076CEA1 /* ValidateTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ValidateTool.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -408,6 +413,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA5DFE69197E05730076CEA1 /* AdSupport.framework in Frameworks */,
 				EA3B8B99196A63D400B285E7 /* Frontia.framework in Frameworks */,
 				CE46B681195D2F1D00BFA99D /* CoreTelephony.framework in Frameworks */,
 				719F4B4718C9EF7E0074CA5D /* CoreLocation.framework in Frameworks */,
@@ -723,6 +729,7 @@
 		9561ACB0151286EE005889C6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EA5DFE68197E05730076CEA1 /* AdSupport.framework */,
 				CE46B680195D2F1D00BFA99D /* CoreTelephony.framework */,
 				CE46B67E195D2EF600BFA99D /* MessageUI.framework */,
 				CE46B67C195D2EE400BFA99D /* libstdc++.dylib */,
@@ -764,6 +771,7 @@
 		9561AD0C15130E96005889C6 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				EA5DFE3A197E02FE0076CEA1 /* Utilities */,
 				472E41171924A52C000D0123 /* Nibs */,
 				47E894D719208C840063DDAF /* UserInfo */,
 				713C862A18CDF3DD00D0858B /* SVPullToRefresh.h */,
@@ -932,6 +940,15 @@
 				EA3B8B98196A63D400B285E7 /* WXApiObject.h */,
 			);
 			path = WX;
+			sourceTree = "<group>";
+		};
+		EA5DFE3A197E02FE0076CEA1 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				EA5DFE6A197E06490076CEA1 /* ValidateTool.h */,
+				EA5DFE6B197E06490076CEA1 /* ValidateTool.m */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1124,6 +1141,7 @@
 				95BCC45A15F081130009F1DA /* UIViewController+JASidePanel.m in Sources */,
 				CEB06196195D0DA700A054CF /* SDNetworkActivityIndicator.m in Sources */,
 				713C863018CDF3DD00D0858B /* UIScrollView+SVPullToRefresh.m in Sources */,
+				EA5DFE6C197E06490076CEA1 /* ValidateTool.m in Sources */,
 				71BC395718CB2513009634AD /* JACooperationViewController.m in Sources */,
 				71B1449118C2530D0029E58F /* JACenterCell.m in Sources */,
 				71BC395B18CB2513009634AD /* JAHelpViewController.m in Sources */,
@@ -1249,7 +1267,7 @@
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "兼职宝";
-				PROVISIONING_PROFILE = "788926E8-095C-4694-8E7B-870FC5384B01";
+				PROVISIONING_PROFILE = "DDA6C7F4-3651-4865-9E51-2C8BE679D65A";
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
 				WRAPPER_EXTENSION = app;
 			};
