@@ -451,6 +451,7 @@ static int maxFileSize = 250*1024;
 /**
  @[@"姓名", @"性别", @"年龄",@"邮箱", @"手机号", @"电话号码", @"qq号"];
  */
+#pragma mark - 整体更新用户信息
 -(void)updateUserAllInfoWith:(NSArray *)info
 {
     if(_index == 0)
@@ -487,22 +488,7 @@ static int maxFileSize = 250*1024;
     }
 }
 
--(void)updateUserInfo:(NSArray *)info
-{
-    NSDictionary *dict = @{@"user_id":@"152", @"name":[info objectAtIndex:0],@"gender":[info objectAtIndex:1],@"age":[info objectAtIndex:2],@"email":[info objectAtIndex:3],@"phone":[info objectAtIndex:4],@"telephone":[info objectAtIndex:5], @"qq":[info objectAtIndex:6]};
-    NSString *url = [NSString stringWithFormat:@"%@%@",@"http://172.16.128.123:8080/ECServer_D/",@"login"];//你的接口地址
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];//申明返回的结果是json类型
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];//如果报接受类型不一致请替换一致text/html或别的
-    manager.requestSerializer=[AFJSONRequestSerializer serializer];//申明请求的数据是json类型
-    [manager POST:url parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@", responseObject);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
-        NSLog(@"Error: %@", error);
-    }
-     ];
-}
-
+#pragma mark - 更加key一条一条更新用户信息
 - (void)updateInfoForKey:(NSString *)key value:(NSString *)value{
     key = [key isEqualToString:@"年龄"] ? @"出生日期" : key;
     

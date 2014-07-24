@@ -45,5 +45,5 @@
 //安全释放
 #define RELEASE_SAFELY(_POINTER) if (nil != (_POINTER)){[_POINTER release];_POINTER = nil; }
 
-#define Main_TestDomain @"http://mark2007081021.oicp.net/sulai-api/Client_v1.1.ashx"
+#define Main_TestDomain @"http://192.168.1.115/sulai-api/Client_v1.1.ashx"
 #define Main_Domain     @"http://www.jzb24.com/Client_v1.1.ashx"

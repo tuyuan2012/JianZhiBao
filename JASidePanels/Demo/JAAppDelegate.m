@@ -58,7 +58,7 @@ SOFTWARE.
         [ud setObject:@"" forKey:@"user_id"];
     }
     //    [ud setObject:@"http://jzb.cloudapp.net/Client.ashx" forKey:@"rootURL"];
-    [ud setObject:Main_Domain forKey:@"rootURL"];//@"http://www.jzb24.com/Client_v1.1.ashx"
+    [ud setObject:Main_TestDomain forKey:@"rootURL"];//@"http://www.jzb24.com/Client_v1.1.ashx"
     
     [MobClick startWithAppkey:YouMengAPP_Key reportPolicy:BATCH   channelId:nil];
     
